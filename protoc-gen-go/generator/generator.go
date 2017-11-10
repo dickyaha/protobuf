@@ -1781,8 +1781,9 @@ func (g *Generator) generateMessage(message *Descriptor) {
 		ns := allocNames(base, "Get"+base)
 		fieldName, fieldGetterName := ns[0], ns[1]
 		typename, wiretype := g.GoType(message, field)
-		jsonName := *field.Name
-		tag := fmt.Sprintf("protobuf:%s json:%q", g.goTag(message, field, wiretype), jsonName+",omitempty")
+		// jsonName := *field.Name
+		// tag := fmt.Sprintf("protobuf:%s json:%q", g.goTag(message, field, wiretype), jsonName+",omitempty")
+		tag := fmt.Sprintf("protobuf:%s json:%q", g.goTag(message, field, wiretype), field.GetJsonName())
 
 		fieldNames[field] = fieldName
 		fieldGetterNames[field] = fieldGetterName
@@ -1878,9 +1879,9 @@ func (g *Generator) generateMessage(message *Descriptor) {
 	if len(message.ExtensionRange) > 0 {
 		g.P(g.Pkg["proto"], ".XXX_InternalExtensions `json:\"-\"`")
 	}
-	if !message.proto3() {
-		g.P("XXX_unrecognized\t[]byte `json:\"-\"`")
-	}
+	// if !message.proto3() {
+	// 	g.P("XXX_unrecognized\t[]byte `json:\"-\"`")
+	// }
 	g.Out()
 	g.P("}")
 
